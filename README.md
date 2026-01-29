@@ -17,11 +17,11 @@ This repository contains an implementation of a tab navigation component with su
 # How to run the project
 ### Step 1: Clone the repository
 ```
-git clone https://github.com/YanamiYokico/react_landing_phone-page.git
+git clone https://github.com/YanamiYokico/react_tabs.git
 ```
 ### Step 2: Navigate into the project folder
 ```
-cd react_landing_phone-page
+cd react_tabs
 ```
 ### Step 3: Install dependencies
 ```
