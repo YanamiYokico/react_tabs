@@ -29,5 +29,5 @@ npm install
 ```
 ### Step 4: Run the project locally
 ```
-npm start
+npm run dev
 ```
