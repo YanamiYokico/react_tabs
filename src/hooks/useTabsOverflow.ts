@@ -1,66 +1,93 @@
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import type { Tab } from '../types/tab';
 
 const OVERFLOW_BUTTON_WIDTH = 48;
 
-export function useTabsOverflow(tabs: Tab[]) {
+export function useTabsOverflow(tabs: Tab[], enabled = true) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const tabRefs = useRef<Map<string, HTMLDivElement>>(new Map());
 
   const [visible, setVisible] = useState<Tab[]>(tabs);
   const [hidden, setHidden] = useState<Tab[]>([]);
 
+  const frozenRef = useRef(false);
+
+  useEffect(() => {
+    frozenRef.current = !enabled;
+  }, [enabled]);
+
   useLayoutEffect(() => {
+    if (!enabled) return;
+
     const container = containerRef.current;
     if (!container) return;
 
+    const row = container.querySelector('.tabs-row') as HTMLDivElement;
+    if (!row) return;
+
     const recalc = () => {
-      const containerWidth = container.offsetWidth;
+      if (frozenRef.current) return;
 
-      let used = 0;
-      const v: Tab[] = [];
-      const h: Tab[] = [];
+      const containerWidth = row.clientWidth;
 
-      for (const tab of tabs) {
+      const pinned = tabs.filter(t => t.pinned);
+      const normal = tabs.filter(t => !t.pinned);
+
+      let usedWidth = 0;
+      let pinnedWidth = 0;
+
+      for (const tab of pinned) {
+        const el = tabRefs.current.get(tab.id);
+        if (el) pinnedWidth += el.offsetWidth;
+      }
+
+      let available = containerWidth - pinnedWidth;
+      if (available <= 0) {
+        setVisible(pinned);
+        setHidden(normal);
+        return;
+      }
+
+      const visibleNormal: Tab[] = [];
+      const hiddenNormal: Tab[] = [];
+
+      for (const tab of normal) {
         const el = tabRefs.current.get(tab.id);
         if (!el) continue;
 
         const w = el.offsetWidth;
 
-        if (used + w <= containerWidth) {
-          used += w;
-          v.push(tab);
+        if (usedWidth + w <= available) {
+          usedWidth += w;
+          visibleNormal.push(tab);
         } else {
-          h.push(tab);
+          hiddenNormal.push(tab);
         }
       }
 
-      // если overflow нужен — резервируем кнопку
-      if (h.length > 0) {
-        used = 0;
-        v.length = 0;
-        h.length = 0;
+      if (hiddenNormal.length > 0) {
+        available -= OVERFLOW_BUTTON_WIDTH;
+        usedWidth = 0;
+        visibleNormal.length = 0;
+        hiddenNormal.length = 0;
 
-        const available =
-          containerWidth - OVERFLOW_BUTTON_WIDTH;
-
-        for (const tab of tabs) {
+        for (const tab of normal) {
           const el = tabRefs.current.get(tab.id);
           if (!el) continue;
 
           const w = el.offsetWidth;
 
-          if (used + w <= available) {
-            used += w;
-            v.push(tab);
+          if (usedWidth + w <= available) {
+            usedWidth += w;
+            visibleNormal.push(tab);
           } else {
-            h.push(tab);
+            hiddenNormal.push(tab);
           }
         }
       }
 
-      setVisible(v);
-      setHidden(h);
+      setVisible([...pinned, ...visibleNormal]);
+      setHidden(hiddenNormal);
     };
 
     const ro = new ResizeObserver(recalc);
@@ -68,7 +95,7 @@ export function useTabsOverflow(tabs: Tab[]) {
     recalc();
 
     return () => ro.disconnect();
-  }, [tabs]);
+  }, [tabs, enabled]);
 
   return {
     containerRef,

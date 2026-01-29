@@ -10,8 +10,6 @@ export function TabsOverflow({ tabs, onSelect }: Props) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  const hasTabs = tabs.length > 0;
-
   useEffect(() => {
     const onClickOutside = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) {
@@ -24,23 +22,11 @@ export function TabsOverflow({ tabs, onSelect }: Props) {
   }, []);
 
   return (
-    <div
-      className="overflow"
-      ref={ref}
-      style={{
-        width: 48, // 🔒 всегда занимаем место
-        visibility: hasTabs ? 'visible' : 'hidden',
-      }}
-    >
+    <div className="overflow" ref={ref}>
       <button
         className={`overflow-btn ${open ? 'is-open' : ''}`}
-        onClick={() => {
-          if (hasTabs) setOpen(v => !v);
-        }}
+        onClick={() => setOpen(v => !v)}
         aria-expanded={open}
-        disabled={!hasTabs}
-        aria-hidden={!hasTabs}
-        tabIndex={hasTabs ? 0 : -1}
       >
         <img
           src="/public/icons/expand_more_FILL0_wght400_GRAD0_opsz24 1.svg"
@@ -48,7 +34,7 @@ export function TabsOverflow({ tabs, onSelect }: Props) {
         />
       </button>
 
-      {open && hasTabs && (
+      {open && (
         <div className="overflow-menu" role="menu">
           {tabs.map(tab => (
             <div
