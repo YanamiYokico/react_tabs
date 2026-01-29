@@ -1,0 +1,56 @@
+@import url('../../fonts/fonts.css');
+
+.tabs-root {
+  display: flex;
+  align-items: center;
+  height: 49px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.tabs-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  overflow: hidden;
+}
+
+.pinned-area {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: 8px;
+}
+
+.tab:hover {
+  color: #111827;
+}
+
+.tab.active {
+  background: #9ca3af;
+  color: #fff;
+  border-radius: 0;
+}
+
+.tab.pinned {
+  font-weight: 500;
+}
+
+.pin-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  opacity: 0;
+  font-size: 12px;
+  color: inherit;
+}
+
+.tab:hover .pin-btn {
+  opacity: 1;
+}
+
+.tab.pinned .pin-btn {
+  opacity: 1;
+}

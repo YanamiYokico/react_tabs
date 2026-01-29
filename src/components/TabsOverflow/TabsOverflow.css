@@ -1,0 +1,71 @@
+.overflow {
+  position: relative;
+}
+
+.overflow-btn {
+  width: 36px;
+  height: 48px;
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.overflow-btn:not(.is-open):hover {
+  background-color: #f1f3f5;
+}
+
+.overflow-btn.is-open {
+  background-color: #9ca3af;
+}
+
+.overflow-btn img {
+  transition: transform 0.2s ease;
+}
+
+.overflow-btn.is-open img {
+  transform: rotate(180deg);
+}
+
+.overflow-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 220px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  padding: 6px;
+  z-index: 100;
+}
+
+.overflow-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.15;
+  color: #7f858d;
+
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.overflow-item:hover {
+  background-color: #f1f3f5;
+  color: #111827;
+}
+
+.overflow-item-title {
+  flex: 1;
+}
