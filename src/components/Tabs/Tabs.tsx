@@ -37,7 +37,6 @@ export function Tabs() {
     return saved ? JSON.parse(saved) : INITIAL_TABS;
   });
 
-  const [isDragging, setIsDragging] = useState(false);
   const [activeDragId, setActiveDragId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -45,7 +44,8 @@ export function Tabs() {
   }, [tabs]);
 
   const { containerRef, tabRefs, visible, hidden } =
-    useTabsOverflow(tabs, !isDragging);
+    useTabsOverflow(tabs);
+
 
   const pinnedTabs = visible.filter(t => t.pinned);
   const draggableTabs = visible.filter(t => !t.pinned);
@@ -88,16 +88,13 @@ export function Tabs() {
         <DndContext
           collisionDetection={closestCenter}
           onDragStart={e => {
-            setIsDragging(true);
             setActiveDragId(e.active.id as string);
           }}
           onDragEnd={e => {
-            setIsDragging(false);
             setActiveDragId(null);
             onDragEnd(e);
           }}
           onDragCancel={() => {
-            setIsDragging(false);
             setActiveDragId(null);
           }}
         >
