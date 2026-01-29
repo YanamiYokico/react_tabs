@@ -1,6 +1,6 @@
 # Tabs
 This repository contains an implementation of a tab navigation component with support for drag-and-drop, pinned tabs, and an overflow menu.
-#Features
+# Features
 - Tab-based navigation  
 - **Pinned tabs** (always stay on the left)  
 - **Drag-and-drop** tab reordering (powered by `dnd-kit`)  
