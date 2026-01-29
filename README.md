@@ -1,13 +1,19 @@
 # Tabs
 This repository contains an implementation of a tab navigation component with support for drag-and-drop, pinned tabs, and an overflow menu.
+#Features
+- Tab-based navigation  
+- **Pinned tabs** (always stay on the left)  
+- **Drag-and-drop** tab reordering (powered by `dnd-kit`)  
+- **Overflow menu** for tabs that do not fit into the visible container  
+- Automatic recalculation on window resize  
+- Tabs state persistence using `localStorage` (order and pinned state)  
+- Navigation between tabs via React Router
 # Technologies used
-- BEM
-- SCSS
 - Typescript
 - React
 - React router
 - Vite
-- Context API
+- dnd-kit(drag-and-drop)
 # How to run the project
 ### Step 1: Clone the repository
 ```
